@@ -112,9 +112,6 @@ contract ZoraCreator1155FactoryForkTest is ForkDeploymentConfig, Test {
         // get the mint fee from the contract
         uint256 mintFee = 0.000777 ether;
 
-        // make sure the mint fee amount matches the configured mint fee amount
-        assertEq(mintFee, getChainConfig().mintFeeAmount, chainName);
-
         // mint 3 tokens
 
         uint256 quantityToMint = 3;

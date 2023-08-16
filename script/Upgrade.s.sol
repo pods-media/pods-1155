@@ -53,7 +53,6 @@ contract UpgradeScript is ZoraDeployerBase {
 
         bool isNewNFTImpl = deployment.contract1155Impl == address(0);
         if (isNewNFTImpl) {
-            console2.log("mintFeeAmount", chainConfig.mintFeeAmount);
             console2.log("minFeeRecipient", chainConfig.mintFeeRecipient);
             console2.log("protocolRewards", chainConfig.protocolRewards);
             deployment.contract1155Impl = address(new ZoraCreator1155Impl(chainConfig.mintFeeRecipient, deployment.factoryProxy, chainConfig.protocolRewards));
