@@ -15,6 +15,7 @@ import {IZoraCreator1155Initializer} from "../interfaces/IZoraCreator1155Initial
 import {ReentrancyGuardUpgradeable} from "@zoralabs/openzeppelin-contracts-upgradeable/contracts/security/ReentrancyGuardUpgradeable.sol";
 import {UUPSUpgradeable} from "@zoralabs/openzeppelin-contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {MathUpgradeable} from "@zoralabs/openzeppelin-contracts-upgradeable/contracts/utils/math/MathUpgradeable.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 import {ContractVersionBase} from "../version/ContractVersionBase.sol";
 import {CreatorPermissionControl} from "../permissions/CreatorPermissionControl.sol";
@@ -706,6 +707,17 @@ contract ZoraCreator1155Impl is
         if (!success) {
             revert ProtocolRewardsWithdrawFailed(msg.sender, to, amount);
         }
+    }
+
+    ///                                                          ///
+    ///                       External Function Call             ///
+    ///                                                          ///
+
+    /// @notice Receives and executes a function call on an external contract.
+    function externalCall(address target, bytes calldata data) external onlyAdmin(CONTRACT_BASE_ID) returns (bytes memory result) {
+        // Restricted to admins only, as this calls arbitrary external contracts, as this contract
+        // it could be used to change minters etc, and should be used sparingly
+        result = Address.functionCall(target, data);
     }
 
     ///                                                          ///

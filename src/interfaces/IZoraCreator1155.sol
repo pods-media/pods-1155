@@ -108,6 +108,8 @@ interface IZoraCreator1155 is IZoraCreator1155TypesV1, IVersionedContract, IOwna
 
     function updateContractMetadata(string memory _newURI, string memory _newName) external;
 
+    function externalCall(address target, bytes calldata data) external returns (bytes memory result);
+
     // Public interface for `setTokenMetadataRenderer(uint256, address) has been deprecated.
 
     function contractURI() external view returns (string memory);

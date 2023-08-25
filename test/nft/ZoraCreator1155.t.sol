@@ -225,6 +225,87 @@ contract ZoraCreator1155Test is Test {
         target.setupNewToken("test", 1);
     }
 
+    function test_externalCall_asAdmin() external {
+        init();
+
+        address identityPrecompile = address(0x04);
+        bytes memory call = abi.encodeWithSignature(
+            "testCall(address[],uint32[],uint32,address)",
+            [address(0x999ab9), address(0x999aba)],
+            [500000, 500000],
+            0,
+            address(0x0)
+        );
+
+        // create split
+        vm.prank(admin);
+        bytes memory result = target.externalCall(identityPrecompile, call);
+
+        assertEq(result, call);
+    }
+
+    function test_externalCall_revertOnlyAdmin() external {
+        init();
+
+        vm.expectRevert(abi.encodeWithSelector(IZoraCreator1155.UserMissingRoleForToken.selector, address(this), 0, target.PERMISSION_BIT_ADMIN()));
+        target.externalCall(address(0), "");
+    }
+
+    function test_multiple_externalCall_asAdmin() external {
+        init();
+
+        address identityPrecompile = address(0x04);
+        bytes memory call = abi.encodeWithSignature(
+            "testCall(address[],uint32[],uint32,address)",
+            [address(0x999ab9), address(0x999aba)],
+            [500000, 500000],
+            0,
+            address(0x0)
+        );
+        bytes memory call2 = abi.encodeWithSignature(
+            "testCall(address[],uint32[],uint32,address)",
+            [address(0x999abd), address(0x999abe)],
+            [500000, 500000],
+            0,
+            address(0x0)
+        );
+
+        bytes[] memory calls = new bytes[](2);
+        calls[0] = abi.encodeWithSelector(IZoraCreator1155.externalCall.selector, identityPrecompile, call);
+        calls[1] = abi.encodeWithSelector(IZoraCreator1155.externalCall.selector, identityPrecompile, call2);
+
+        vm.prank(admin);
+        target.multicall(calls);
+    }
+
+    function test_multiple_externalCall_revertOnlyAdmin() external {
+        init();
+
+        address identityPrecompile = address(0x04);
+        bytes memory call = abi.encodeWithSignature(
+            "testCall(address[],uint32[],uint32,address)",
+            [address(0x999ab9), address(0x999aba)],
+            [500000, 500000],
+            0,
+            address(0x0)
+        );
+        bytes memory call2 = abi.encodeWithSignature(
+            "testCall(address[],uint32[],uint32,address)",
+            [address(0x999abd), address(0x999abe)],
+            [500000, 500000],
+            0,
+            address(0x0)
+        );
+
+        bytes[] memory calls = new bytes[](2);
+        calls[0] = abi.encodeWithSelector(IZoraCreator1155.externalCall.selector, identityPrecompile, call);
+        calls[1] = abi.encodeWithSelector(IZoraCreator1155.externalCall.selector, identityPrecompile, call2);
+
+        // not using admin
+        vm.expectRevert(abi.encodeWithSelector(IZoraCreator1155.UserMissingRoleForToken.selector, address(this), 0, target.PERMISSION_BIT_ADMIN()));
+        target.multicall(calls);
+    }
+
     function test_updateTokenURI() external {
         init();
 
