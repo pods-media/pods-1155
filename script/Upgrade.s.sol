@@ -61,12 +61,12 @@ contract UpgradeScript is ZoraDeployerBase {
             console2.log("Existing NFT_IMPL", deployment.contract1155Impl);
         }
 
-        deployment.factoryProxy = address(
+        deployment.factoryImpl = address(
             new ZoraCreator1155FactoryImpl({
                 _implementation: IZoraCreator1155(deployment.contract1155Impl),
                 _merkleMinter: ZoraCreatorMerkleMinterStrategy(deployment.merkleMintSaleStrategy),
-                _redeemMinterFactory: ZoraCreatorRedeemMinterFactory(deployment.redeemMinterFactory),
-                _fixedPriceMinter: ZoraCreatorFixedPriceSaleStrategy(deployment.fixedPriceSaleStrategy)
+                _fixedPriceMinter: ZoraCreatorFixedPriceSaleStrategy(deployment.fixedPriceSaleStrategy),
+                _redeemMinterFactory: ZoraCreatorRedeemMinterFactory(deployment.redeemMinterFactory)
             })
         );
 
@@ -74,7 +74,7 @@ contract UpgradeScript is ZoraDeployerBase {
         console2.log("Upgrade to this new factory impl on the proxy:", deployment.factoryProxy);
 
         if (isNewNFTImpl) {
-            deployTestContractForVerification(deployment.factoryProxy, chainConfig.factoryOwner);
+            deployTestContractForVerification(deployment.factoryImpl, chainConfig.factoryOwner);
         }
 
         return getDeploymentJSON(deployment);

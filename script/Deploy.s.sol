@@ -52,8 +52,8 @@ contract DeployScript is ZoraDeployerBase {
         ZoraCreator1155FactoryImpl factoryImpl = new ZoraCreator1155FactoryImpl({
             _implementation: creatorImpl,
             _merkleMinter: merkleMinter,
-            _redeemMinterFactory: redeemMinterFactory,
-            _fixedPriceMinter: fixedPricedMinter
+            _fixedPriceMinter: fixedPricedMinter,
+            _redeemMinterFactory: redeemMinterFactory
         });
 
         deployment.factoryImpl = address(factoryImpl);
