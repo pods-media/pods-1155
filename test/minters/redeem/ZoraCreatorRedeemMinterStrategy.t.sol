@@ -22,7 +22,7 @@ contract ZoraCreatorRedeemMinterStrategyTest is Test {
     uint256 internal newTokenId;
     address internal zora;
 
-    uint256 constant TOTAL_REWARD_PER_MINT = 0.000777 ether;
+    uint256 constant TOTAL_REWARD_PER_MINT = 0.0007 ether;
 
     event RedeemSet(address indexed target, bytes32 indexed redeemsInstructionsHash, ZoraCreatorRedeemMinterStrategy.RedeemInstructions data);
     event RedeemProcessed(address indexed target, bytes32 indexed redeemsInstructionsHash, address sender, uint256[][] tokenIds, uint256[][] amounts);

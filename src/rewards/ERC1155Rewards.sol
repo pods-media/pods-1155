@@ -19,18 +19,18 @@ library RewardSplits {
     error INVALID_ETH_AMOUNT();
     error ONLY_CREATE_REFERRAL();
 
-    uint256 internal constant TOTAL_REWARD_PER_MINT = 0.000777 ether;
+    uint256 internal constant TOTAL_REWARD_PER_MINT = 0.0007 ether;
 
-    uint256 internal constant CREATOR_REWARD = 0.000333 ether;
-    uint256 internal constant FIRST_MINTER_REWARD = 0.000111 ether;
+    uint256 internal constant CREATOR_REWARD = 0.0001 ether;
+    uint256 internal constant FIRST_MINTER_REWARD = 0.0 ether;
 
-    uint256 internal constant CREATE_REFERRAL_FREE_MINT_REWARD = 0.000111 ether;
-    uint256 internal constant MINT_REFERRAL_FREE_MINT_REWARD = 0.000111 ether;
-    uint256 internal constant ZORA_FREE_MINT_REWARD = 0.000111 ether;
+    uint256 internal constant CREATE_REFERRAL_FREE_MINT_REWARD = 0.0 ether;
+    uint256 internal constant MINT_REFERRAL_FREE_MINT_REWARD = 0.0 ether;
+    uint256 internal constant ZORA_FREE_MINT_REWARD = 0.0006 ether;
 
-    uint256 internal constant MINT_REFERRAL_PAID_MINT_REWARD = 0.000222 ether;
-    uint256 internal constant CREATE_REFERRAL_PAID_MINT_REWARD = 0.000222 ether;
-    uint256 internal constant ZORA_PAID_MINT_REWARD = 0.000222 ether;
+    uint256 internal constant MINT_REFERRAL_PAID_MINT_REWARD = 0.0 ether;
+    uint256 internal constant CREATE_REFERRAL_PAID_MINT_REWARD = 0.0 ether;
+    uint256 internal constant ZORA_PAID_MINT_REWARD = 0.0007 ether;
 
     function computeTotalReward(uint256 numTokens) public pure returns (uint256) {
         return numTokens * TOTAL_REWARD_PER_MINT;

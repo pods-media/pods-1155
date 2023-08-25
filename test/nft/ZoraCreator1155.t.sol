@@ -45,7 +45,7 @@ contract ZoraCreator1155Test is Test {
     address internal createReferral;
     address internal zora;
 
-    uint256 constant TOTAL_REWARD_PER_MINT = 0.000777 ether;
+    uint256 constant TOTAL_REWARD_PER_MINT = 0.0007 ether;
 
     event Purchased(address indexed sender, address indexed minter, uint256 indexed tokenId, uint256 quantity, uint256 value);
 

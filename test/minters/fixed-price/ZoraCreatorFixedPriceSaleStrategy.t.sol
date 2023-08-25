@@ -18,7 +18,7 @@ contract ZoraCreatorFixedPriceSaleStrategyTest is Test {
     address payable internal admin = payable(address(0x999));
     address internal zora;
 
-    uint256 constant TOTAL_REWARD_PER_MINT = 0.000777 ether;
+    uint256 constant TOTAL_REWARD_PER_MINT = 0.0007 ether;
 
     event SaleSet(address indexed mediaContract, uint256 indexed tokenId, ZoraCreatorFixedPriceSaleStrategy.SalesConfig salesConfig);
     event MintComment(address indexed sender, address indexed tokenContract, uint256 indexed tokenId, uint256 quantity, string comment);
