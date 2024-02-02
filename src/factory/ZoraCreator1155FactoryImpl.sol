@@ -11,7 +11,7 @@ import {IMinter1155} from "../interfaces/IMinter1155.sol";
 import {IContractMetadata} from "../interfaces/IContractMetadata.sol";
 import {Ownable2StepUpgradeable} from "../utils/ownable/Ownable2StepUpgradeable.sol";
 import {FactoryManagedUpgradeGate} from "../upgrades/FactoryManagedUpgradeGate.sol";
-import {Zora1155} from "../proxies/Zora1155.sol";
+import {Pods1155} from "../proxies/Pods1155.sol";
 
 import {ContractVersionBase} from "../version/ContractVersionBase.sol";
 
@@ -72,7 +72,7 @@ contract ZoraCreator1155FactoryImpl is IZoraCreator1155Factory, ContractVersionB
         address payable defaultAdmin,
         bytes[] calldata setupActions
     ) external returns (address) {
-        address newContract = address(new Zora1155(address(implementation)));
+        address newContract = address(new Pods1155(address(implementation)));
 
         emit SetupNewContract({
             newContract: address(newContract),

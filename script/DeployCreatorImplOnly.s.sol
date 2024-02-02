@@ -7,7 +7,7 @@ import "forge-std/console2.sol";
 import {ZoraDeployerBase} from "./ZoraDeployerBase.sol";
 import {ChainConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
 
-import {Zora1155Factory} from "../src/proxies/Zora1155Factory.sol";
+import {Pods1155Factory} from "../src/proxies/Pods1155Factory.sol";
 import {ZoraCreator1155Impl} from "../src/nft/ZoraCreator1155Impl.sol";
 
 contract DeployScript is ZoraDeployerBase {
@@ -24,7 +24,7 @@ contract DeployScript is ZoraDeployerBase {
 
         vm.startBroadcast(deployer);
 
-        Zora1155Factory factoryProxy = Zora1155Factory(payable(factoryProxyAddress));
+        Pods1155Factory factoryProxy = Pods1155Factory(payable(factoryProxyAddress));
 
         ZoraCreator1155Impl creatorImpl = new ZoraCreator1155Impl(chainConfig.mintFeeRecipient, address(factoryProxy), chainConfig.protocolRewards);
 

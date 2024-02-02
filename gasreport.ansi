@@ -374,7 +374,7 @@ Test result: [32mok[0m. 50 passed; 0 failed; finished in 236.68ms
 | withdraw                                                     | 995             | 11253  | 5662   | 32695  | 4       |
 
 
-| src/proxies/Zora1155.sol:Zora1155 contract |                 |        |        |        |         |
+| src/proxies/Pods1155.sol:Pods1155 contract |                 |        |        |        |         |
 |--------------------------------------------|-----------------|--------|--------|--------|---------|
 | Deployment Cost                            | Deployment Size |        |        |        |         |
 | 70099                                      | 1064            |        |        |        |         |
@@ -420,7 +420,7 @@ Test result: [32mok[0m. 50 passed; 0 failed; finished in 236.68ms
 | withdraw                                   | 1308            | 12698  | 8238   | 33008  | 4       |
 
 
-| src/proxies/Zora1155Factory.sol:Zora1155Factory contract |                 |       |        |       |         |
+| src/proxies/Pods1155Factory.sol:Pods1155Factory contract |                 |       |        |       |         |
 |----------------------------------------------------------|-----------------|-------|--------|-------|---------|
 | Deployment Cost                                          | Deployment Size |       |        |       |         |
 | 70448                                                    | 1169            |       |        |       |         |

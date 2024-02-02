@@ -8,7 +8,7 @@ import {ZoraDeployerBase} from "./ZoraDeployerBase.sol";
 import {ChainConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
 
 import {ZoraCreator1155FactoryImpl} from "../src/factory/ZoraCreator1155FactoryImpl.sol";
-import {Zora1155Factory} from "../src/proxies/Zora1155Factory.sol";
+import {Pods1155Factory} from "../src/proxies/Pods1155Factory.sol";
 import {ZoraCreator1155Impl} from "../src/nft/ZoraCreator1155Impl.sol";
 import {ICreatorRoyaltiesControl} from "../src/interfaces/ICreatorRoyaltiesControl.sol";
 import {IZoraCreator1155Factory} from "../src/interfaces/IZoraCreator1155Factory.sol";
@@ -41,7 +41,7 @@ contract DeployScript is ZoraDeployerBase {
         deployment.redeemMinterFactory = address(redeemMinterFactory);
 
         address factoryShimAddress = address(new ProxyShim(deployer));
-        Zora1155Factory factoryProxy = new Zora1155Factory(factoryShimAddress, "");
+        Pods1155Factory factoryProxy = new Pods1155Factory(factoryShimAddress, "");
 
         deployment.factoryProxy = address(factoryProxy);
 

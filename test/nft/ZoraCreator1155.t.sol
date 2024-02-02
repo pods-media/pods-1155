@@ -6,7 +6,7 @@ import "forge-std/Test.sol";
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
 import {MathUpgradeable} from "@zoralabs/openzeppelin-contracts-upgradeable/contracts/utils/math/MathUpgradeable.sol";
 import {ZoraCreator1155Impl} from "../../src/nft/ZoraCreator1155Impl.sol";
-import {Zora1155} from "../../src/proxies/Zora1155.sol";
+import {Pods1155} from "../../src/proxies/Pods1155.sol";
 import {ZoraCreatorFixedPriceSaleStrategy} from "../../src/minters/fixed-price/ZoraCreatorFixedPriceSaleStrategy.sol";
 import {RewardSplits, RewardsSettings} from "../../src/rewards/ERC1155Rewards.sol";
 
@@ -60,7 +60,7 @@ contract ZoraCreator1155Test is Test {
         upgradeGate = new MockUpgradeGate();
         upgradeGate.initialize(admin);
         zoraCreator1155Impl = new ZoraCreator1155Impl(zora, address(upgradeGate), address(protocolRewards));
-        target = ZoraCreator1155Impl(address(new Zora1155(address(zoraCreator1155Impl))));
+        target = ZoraCreator1155Impl(address(new Pods1155(address(zoraCreator1155Impl))));
         simpleMinter = new SimpleMinter();
         fixedPriceMinter = new ZoraCreatorFixedPriceSaleStrategy();
 
