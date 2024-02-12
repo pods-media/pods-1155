@@ -1,0 +1,68 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+
+import "forge-std/Script.sol";
+import "forge-std/console2.sol";
+
+import {ZoraDeployerBase} from "./ZoraDeployerBase.sol";
+import {ChainConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
+
+import {ZoraCreator1155FactoryImpl} from "../src/factory/ZoraCreator1155FactoryImpl.sol";
+import {Pods1155Factory} from "../src/proxies/Pods1155Factory.sol";
+import {PodsCreator1155Impl} from "../src/nft/PodsCreator1155Impl.sol";
+import {ICreatorRoyaltiesControl} from "../src/interfaces/ICreatorRoyaltiesControl.sol";
+import {IZoraCreator1155Factory} from "../src/interfaces/IZoraCreator1155Factory.sol";
+import {IMinter1155} from "../src/interfaces/IMinter1155.sol";
+import {IZoraCreator1155} from "../src/interfaces/IZoraCreator1155.sol";
+import {ProxyShim} from "../src/utils/ProxyShim.sol";
+import {ZoraCreatorFixedPriceSaleStrategy} from "../src/minters/fixed-price/ZoraCreatorFixedPriceSaleStrategy.sol";
+import {ZoraCreatorMerkleMinterStrategy} from "../src/minters/merkle/ZoraCreatorMerkleMinterStrategy.sol";
+import {ZoraCreatorRedeemMinterFactory} from "../src/minters/redeem/ZoraCreatorRedeemMinterFactory.sol";
+
+contract DeployScript is ZoraDeployerBase {
+    function run() public returns (string memory) {
+        Deployment memory deployment = getDeployment();
+        ChainConfig memory chainConfig = getChainConfig();
+
+        console2.log("zoraFeeRecipient", chainConfig.mintFeeRecipient);
+        console2.log("factoryOwner", chainConfig.factoryOwner);
+        console2.log("protocolRewards", chainConfig.protocolRewards);
+
+        ZoraCreatorFixedPriceSaleStrategy fixedPricedMinter = ZoraCreatorFixedPriceSaleStrategy(deployment.fixedPriceSaleStrategy);
+        ZoraCreatorMerkleMinterStrategy merkleMinter = ZoraCreatorMerkleMinterStrategy(deployment.merkleMintSaleStrategy);
+        ZoraCreatorRedeemMinterFactory redeemMinterFactory = ZoraCreatorRedeemMinterFactory(deployment.redeemMinterFactory);
+
+        address deployer = vm.envAddress("DEPLOYER");
+
+        vm.startBroadcast(deployer);
+
+        address factoryShimAddress = address(new ProxyShim(deployer));
+        Pods1155Factory factoryProxy = new Pods1155Factory(factoryShimAddress, "");
+
+        deployment.factoryProxy = address(factoryProxy);
+
+        PodsCreator1155Impl creatorImpl = new PodsCreator1155Impl(chainConfig.mintFeeRecipient, address(factoryProxy), chainConfig.protocolRewards);
+
+        deployment.contract1155Impl = address(creatorImpl);
+
+        ZoraCreator1155FactoryImpl factoryImpl = new ZoraCreator1155FactoryImpl({
+            _implementation: creatorImpl,
+            _merkleMinter: merkleMinter,
+            _fixedPriceMinter: fixedPricedMinter,
+            _redeemMinterFactory: redeemMinterFactory
+        });
+
+        deployment.factoryImpl = address(factoryImpl);
+
+        // Upgrade to "real" factory address
+        ZoraCreator1155FactoryImpl(address(factoryProxy)).upgradeTo(address(factoryImpl));
+        ZoraCreator1155FactoryImpl(address(factoryProxy)).initialize(chainConfig.factoryOwner);
+
+        console2.log("Factory Proxy", address(factoryProxy));
+        console2.log("Implementation Address", address(creatorImpl));
+
+        deployTestContractForVerification(address(factoryProxy), chainConfig.factoryOwner);
+
+        return getDeploymentJSON(deployment);
+    }
+}
