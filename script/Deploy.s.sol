@@ -9,7 +9,7 @@ import {ChainConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
 
 import {ZoraCreator1155FactoryImpl} from "../src/factory/ZoraCreator1155FactoryImpl.sol";
 import {Pods1155Factory} from "../src/proxies/Pods1155Factory.sol";
-import {ZoraCreator1155Impl} from "../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../src/nft/PodsCreator1155Impl.sol";
 import {ICreatorRoyaltiesControl} from "../src/interfaces/ICreatorRoyaltiesControl.sol";
 import {IZoraCreator1155Factory} from "../src/interfaces/IZoraCreator1155Factory.sol";
 import {IMinter1155} from "../src/interfaces/IMinter1155.sol";
@@ -45,7 +45,7 @@ contract DeployScript is ZoraDeployerBase {
 
         deployment.factoryProxy = address(factoryProxy);
 
-        ZoraCreator1155Impl creatorImpl = new ZoraCreator1155Impl(chainConfig.mintFeeRecipient, address(factoryProxy), chainConfig.protocolRewards);
+        PodsCreator1155Impl creatorImpl = new PodsCreator1155Impl(chainConfig.mintFeeRecipient, address(factoryProxy), chainConfig.protocolRewards);
 
         deployment.contract1155Impl = address(creatorImpl);
 

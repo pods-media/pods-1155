@@ -8,7 +8,7 @@ import {ChainConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
 
 import {ZoraCreator1155FactoryImpl} from "../src/factory/ZoraCreator1155FactoryImpl.sol";
 import {Pods1155Factory} from "../src/proxies/Pods1155Factory.sol";
-import {ZoraCreator1155Impl} from "../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../src/nft/PodsCreator1155Impl.sol";
 import {ICreatorRoyaltiesControl} from "../src/interfaces/ICreatorRoyaltiesControl.sol";
 import {IZoraCreator1155Factory} from "../src/interfaces/IZoraCreator1155Factory.sol";
 import {IMinter1155} from "../src/interfaces/IMinter1155.sol";
@@ -55,7 +55,7 @@ contract UpgradeScript is ZoraDeployerBase {
         if (isNewNFTImpl) {
             console2.log("minFeeRecipient", chainConfig.mintFeeRecipient);
             console2.log("protocolRewards", chainConfig.protocolRewards);
-            deployment.contract1155Impl = address(new ZoraCreator1155Impl(chainConfig.mintFeeRecipient, deployment.factoryProxy, chainConfig.protocolRewards));
+            deployment.contract1155Impl = address(new PodsCreator1155Impl(chainConfig.mintFeeRecipient, deployment.factoryProxy, chainConfig.protocolRewards));
             console2.log("New NFT_IMPL", deployment.contract1155Impl);
         } else {
             console2.log("Existing NFT_IMPL", deployment.contract1155Impl);

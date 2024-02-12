@@ -4,7 +4,7 @@ pragma solidity 0.8.17;
 import "forge-std/Test.sol";
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
 import {ZoraCreator1155FactoryImpl} from "../../src/factory/ZoraCreator1155FactoryImpl.sol";
-import {ZoraCreator1155Impl} from "../../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../../src/nft/PodsCreator1155Impl.sol";
 import {Pods1155Factory} from "../../src/proxies/Pods1155Factory.sol";
 import {IZoraCreator1155Factory} from "../../src/interfaces/IZoraCreator1155Factory.sol";
 import {IZoraCreator1155} from "../../src/interfaces/IZoraCreator1155.sol";
@@ -19,7 +19,7 @@ contract ZoraCreator1155FactoryTest is Test {
     function setUp() external {
         zora = makeAddr("zora");
         ProtocolRewards protocolRewards = new ProtocolRewards();
-        ZoraCreator1155Impl zoraCreator1155Impl = new ZoraCreator1155Impl(zora, address(0), address(protocolRewards));
+        PodsCreator1155Impl zoraCreator1155Impl = new PodsCreator1155Impl(zora, address(0), address(protocolRewards));
         factory = new ZoraCreator1155FactoryImpl(zoraCreator1155Impl, IMinter1155(address(1)), IMinter1155(address(2)), IMinter1155(address(3)));
     }
 
@@ -80,7 +80,7 @@ contract ZoraCreator1155FactoryTest is Test {
             admin,
             initSetup
         );
-        ZoraCreator1155Impl target = ZoraCreator1155Impl(deployedAddress);
+        PodsCreator1155Impl target = PodsCreator1155Impl(deployedAddress);
 
         ICreatorRoyaltiesControl.RoyaltyConfiguration memory config = target.getRoyalties(0);
         assertEq(config.royaltyMintSchedule, royaltyMintSchedule);

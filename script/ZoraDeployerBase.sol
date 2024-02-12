@@ -5,7 +5,7 @@ import "forge-std/Script.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 import {IZoraCreator1155Factory} from "../src/interfaces/IZoraCreator1155Factory.sol";
-import {ZoraCreator1155Impl} from "../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../src/nft/PodsCreator1155Impl.sol";
 import {ICreatorRoyaltiesControl} from "../src/interfaces/ICreatorRoyaltiesControl.sol";
 import {ScriptDeploymentConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
 
@@ -36,7 +36,7 @@ abstract contract ZoraDeployerBase is ScriptDeploymentConfig, Script {
     function deployTestContractForVerification(address factoryProxy, address admin) internal {
         bytes[] memory initUpdate = new bytes[](1);
         initUpdate[0] = abi.encodeWithSelector(
-            ZoraCreator1155Impl.setupNewToken.selector,
+            PodsCreator1155Impl.setupNewToken.selector,
             "ipfs://bafkreigu544g6wjvqcysurpzy5pcskbt45a5f33m6wgythpgb3rfqi3lzi",
             100
         );
@@ -44,11 +44,7 @@ abstract contract ZoraDeployerBase is ScriptDeploymentConfig, Script {
             IZoraCreator1155Factory(factoryProxy).createContract(
                 "ipfs://bafybeicgolwqpozsc7iwgytavete56a2nnytzix2nb2rxefdvbtwwtnnoe/metadata",
                 unicode"🪄",
-                ICreatorRoyaltiesControl.RoyaltyConfiguration({
-                    royaltyBPS: 0,
-                    royaltyRecipient: address(0),
-                    royaltyMintSchedule: 0
-                }),
+                ICreatorRoyaltiesControl.RoyaltyConfiguration({royaltyBPS: 0, royaltyRecipient: address(0), royaltyMintSchedule: 0}),
                 payable(admin),
                 initUpdate
             )

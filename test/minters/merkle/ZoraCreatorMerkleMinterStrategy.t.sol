@@ -3,7 +3,7 @@ pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
-import {ZoraCreator1155Impl} from "../../../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../../../src/nft/PodsCreator1155Impl.sol";
 import {Pods1155} from "../../../src/proxies/Pods1155.sol";
 import {IZoraCreator1155} from "../../../src/interfaces/IZoraCreator1155.sol";
 import {IRenderer1155} from "../../../src/interfaces/IRenderer1155.sol";
@@ -14,7 +14,7 @@ import {ZoraCreatorMerkleMinterStrategy} from "../../../src/minters/merkle/ZoraC
 
 contract ZoraCreatorMerkleMinterStrategyTest is Test {
     ProtocolRewards internal protocolRewards;
-    ZoraCreator1155Impl internal target;
+    PodsCreator1155Impl internal target;
     ZoraCreatorMerkleMinterStrategy internal merkleMinter;
     address payable internal admin = payable(address(0x999));
     address internal zora;
@@ -27,9 +27,9 @@ contract ZoraCreatorMerkleMinterStrategyTest is Test {
         zora = makeAddr("zora");
         bytes[] memory emptyData = new bytes[](0);
         protocolRewards = new ProtocolRewards();
-        ZoraCreator1155Impl targetImpl = new ZoraCreator1155Impl(zora, address(0), address(protocolRewards));
+        PodsCreator1155Impl targetImpl = new PodsCreator1155Impl(zora, address(0), address(protocolRewards));
         Pods1155 proxy = new Pods1155(address(targetImpl));
-        target = ZoraCreator1155Impl(address(proxy));
+        target = PodsCreator1155Impl(address(proxy));
         target.initialize("test", "test", ICreatorRoyaltiesControl.RoyaltyConfiguration(0, 0, address(0)), admin, emptyData);
         merkleMinter = new ZoraCreatorMerkleMinterStrategy();
     }

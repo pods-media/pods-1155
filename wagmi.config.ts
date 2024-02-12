@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from "fs";
 
 type ContractNames =
   | "ZoraCreator1155FactoryImpl"
-  | "ZoraCreator1155Impl"
+  | "PodsCreator1155Impl"
   | "ZoraCreatorFixedPriceSaleStrategy"
   | "ZoraCreatorMerkleMinterStrategy"
   | "ZoraCreatorRedeemMinterFactory"
@@ -14,7 +14,7 @@ type Address = `0x${string}`;
 
 const contractFilesToInclude: ContractNames[] = [
   "ZoraCreator1155FactoryImpl",
-  "ZoraCreator1155Impl",
+  "PodsCreator1155Impl",
   "ZoraCreatorFixedPriceSaleStrategy",
   "ZoraCreatorMerkleMinterStrategy",
   "ZoraCreatorRedeemMinterFactory",

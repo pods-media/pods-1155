@@ -3,7 +3,7 @@ pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
 import {ZeroFeeProtocolRewards} from "../../mock/ZeroFeeProtocolRewards.sol";
-import {ZoraCreator1155Impl} from "../../../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../../../src/nft/PodsCreator1155Impl.sol";
 import {Pods1155} from "../../../src/proxies/Pods1155.sol";
 import {IZoraCreator1155} from "../../../src/interfaces/IZoraCreator1155.sol";
 import {IMinter1155} from "../../../src/interfaces/IMinter1155.sol";
@@ -13,7 +13,7 @@ import {ILimitedMintPerAddress} from "../../../src/interfaces/ILimitedMintPerAdd
 import {ZoraCreatorFixedPriceSaleStrategy} from "../../../src/minters/fixed-price/ZoraCreatorFixedPriceSaleStrategy.sol";
 
 contract ZoraCreatorFixedPriceSaleStrategyTest is Test {
-    ZoraCreator1155Impl internal target;
+    PodsCreator1155Impl internal target;
     ZoraCreatorFixedPriceSaleStrategy internal fixedPrice;
     address payable internal admin = payable(address(0x999));
     address internal zora;
@@ -26,9 +26,9 @@ contract ZoraCreatorFixedPriceSaleStrategyTest is Test {
     function setUp() external {
         zora = makeAddr("zora");
         bytes[] memory emptyData = new bytes[](0);
-        ZoraCreator1155Impl targetImpl = new ZoraCreator1155Impl(zora, address(0), address(new ZeroFeeProtocolRewards()));
+        PodsCreator1155Impl targetImpl = new PodsCreator1155Impl(zora, address(0), address(new ZeroFeeProtocolRewards()));
         Pods1155 proxy = new Pods1155(address(targetImpl));
-        target = ZoraCreator1155Impl(address(proxy));
+        target = PodsCreator1155Impl(address(proxy));
         target.initialize("test", "test", ICreatorRoyaltiesControl.RoyaltyConfiguration(0, 0, address(0)), admin, emptyData);
         fixedPrice = new ZoraCreatorFixedPriceSaleStrategy();
     }

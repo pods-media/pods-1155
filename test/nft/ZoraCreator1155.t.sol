@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
 import {MathUpgradeable} from "@zoralabs/openzeppelin-contracts-upgradeable/contracts/utils/math/MathUpgradeable.sol";
-import {ZoraCreator1155Impl} from "../../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../../src/nft/PodsCreator1155Impl.sol";
 import {Pods1155} from "../../src/proxies/Pods1155.sol";
 import {ZoraCreatorFixedPriceSaleStrategy} from "../../src/minters/fixed-price/ZoraCreatorFixedPriceSaleStrategy.sol";
 import {RewardSplits, RewardsSettings} from "../../src/rewards/ERC1155Rewards.sol";
@@ -25,8 +25,8 @@ contract ZoraCreator1155Test is Test {
     using stdJson for string;
 
     ProtocolRewards internal protocolRewards;
-    ZoraCreator1155Impl internal zoraCreator1155Impl;
-    ZoraCreator1155Impl internal target;
+    PodsCreator1155Impl internal zoraCreator1155Impl;
+    PodsCreator1155Impl internal target;
 
     SimpleMinter simpleMinter;
     ZoraCreatorFixedPriceSaleStrategy internal fixedPriceMinter;
@@ -59,8 +59,8 @@ contract ZoraCreator1155Test is Test {
         protocolRewards = new ProtocolRewards();
         upgradeGate = new MockUpgradeGate();
         upgradeGate.initialize(admin);
-        zoraCreator1155Impl = new ZoraCreator1155Impl(zora, address(upgradeGate), address(protocolRewards));
-        target = ZoraCreator1155Impl(address(new Pods1155(address(zoraCreator1155Impl))));
+        zoraCreator1155Impl = new PodsCreator1155Impl(zora, address(upgradeGate), address(protocolRewards));
+        target = PodsCreator1155Impl(address(new Pods1155(address(zoraCreator1155Impl))));
         simpleMinter = new SimpleMinter();
         fixedPriceMinter = new ZoraCreatorFixedPriceSaleStrategy();
 
@@ -1289,7 +1289,7 @@ contract ZoraCreator1155Test is Test {
     }
 
     function test_unauthorizedUpgradeFails() external {
-        address new1155Impl = address(new ZoraCreator1155Impl(zora, address(0), address(protocolRewards)));
+        address new1155Impl = address(new PodsCreator1155Impl(zora, address(0), address(protocolRewards)));
 
         vm.expectRevert();
         target.upgradeTo(new1155Impl);
@@ -1301,7 +1301,7 @@ contract ZoraCreator1155Test is Test {
 
         oldImpls[0] = address(zoraCreator1155Impl);
 
-        address new1155Impl = address(new ZoraCreator1155Impl(zora, address(0), address(protocolRewards)));
+        address new1155Impl = address(new PodsCreator1155Impl(zora, address(0), address(protocolRewards)));
 
         vm.prank(upgradeGate.owner());
         upgradeGate.registerUpgradePath(oldImpls, new1155Impl);

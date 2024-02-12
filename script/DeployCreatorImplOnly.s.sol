@@ -8,7 +8,7 @@ import {ZoraDeployerBase} from "./ZoraDeployerBase.sol";
 import {ChainConfig, Deployment} from "../src/deployment/DeploymentConfig.sol";
 
 import {Pods1155Factory} from "../src/proxies/Pods1155Factory.sol";
-import {ZoraCreator1155Impl} from "../src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "../src/nft/PodsCreator1155Impl.sol";
 
 contract DeployScript is ZoraDeployerBase {
     function run() public {
@@ -26,7 +26,7 @@ contract DeployScript is ZoraDeployerBase {
 
         Pods1155Factory factoryProxy = Pods1155Factory(payable(factoryProxyAddress));
 
-        ZoraCreator1155Impl creatorImpl = new ZoraCreator1155Impl(chainConfig.mintFeeRecipient, address(factoryProxy), chainConfig.protocolRewards);
+        PodsCreator1155Impl creatorImpl = new PodsCreator1155Impl(chainConfig.mintFeeRecipient, address(factoryProxy), chainConfig.protocolRewards);
 
         console2.log("creatorImpl", address(creatorImpl));
     }
