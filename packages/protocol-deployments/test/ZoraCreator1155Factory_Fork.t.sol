@@ -6,7 +6,7 @@ import {IZoraCreator1155Factory} from "@zoralabs/zora-1155-contracts/src/interfa
 import {ZoraCreator1155FactoryImpl} from "@zoralabs/zora-1155-contracts/src/factory/ZoraCreator1155FactoryImpl.sol";
 import {IZoraCreator1155Errors} from "@zoralabs/zora-1155-contracts/src/interfaces/IZoraCreator1155Errors.sol";
 import {IZoraCreator1155} from "@zoralabs/zora-1155-contracts/src/interfaces/IZoraCreator1155.sol";
-import {ZoraCreator1155Impl} from "@zoralabs/zora-1155-contracts/src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "@zoralabs/zora-1155-contracts/src/nft/PodsCreator1155Impl.sol";
 import {IMinter1155} from "@zoralabs/zora-1155-contracts/src/interfaces/IMinter1155.sol";
 import {IOwnable} from "@zoralabs/zora-1155-contracts/src/interfaces/IOwnable.sol";
 import {ICreatorRoyaltiesControl} from "@zoralabs/zora-1155-contracts/src/interfaces/ICreatorRoyaltiesControl.sol";
@@ -112,9 +112,9 @@ contract ZoraCreator1155FactoryForkTest is ForkDeploymentConfig, Test {
         // mint the token
         vm.deal(collector, valueToSend);
         vm.startPrank(collector);
-        ZoraCreator1155Impl(payable(address(target))).mintWithRewards{value: valueToSend}(fixedPrice, tokenId, quantityToMint, abi.encode(collector), address(0));
+        PodsCreator1155Impl(payable(address(target))).mintWithRewards{value: valueToSend}(fixedPrice, tokenId, quantityToMint, abi.encode(collector), address(0));
 
-        uint256 balance = ZoraCreator1155Impl(payable(address(target))).balanceOf(collector, tokenId);
+        uint256 balance = PodsCreator1155Impl(payable(address(target))).balanceOf(collector, tokenId);
 
         assertEq(balance, quantityToMint, "balance mismatch");
     }

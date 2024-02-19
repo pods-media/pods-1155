@@ -37,10 +37,10 @@ import {IMintWithRewardsRecipients} from "../interfaces/IMintWithRewardsRecipien
 import {ZoraCreator1155Attribution, DecodedCreatorAttribution, PremintTokenSetup, PremintConfig, PremintConfigV2, DelegatedTokenCreation, DelegatedTokenSetup} from "../delegation/ZoraCreator1155Attribution.sol";
 
 /// Imagine. Mint. Enjoy.
-/// @title ZoraCreator1155Impl
-/// @notice The core implementation contract for a creator's 1155 token
+/// @title PodsCreator1155Impl
+/// @notice The core implementation contract for a creator's 1155 token, renamed from ZoraCreator1155Impl for clarity
 /// @author @iainnash / @tbtstl
-contract ZoraCreator1155Impl is
+contract PodsCreator1155Impl is
     IZoraCreator1155,
     IZoraCreator1155Initializer,
     ContractVersionBase,

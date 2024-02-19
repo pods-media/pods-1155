@@ -6,8 +6,8 @@ import {ERC20PresetMinterPauser} from "@openzeppelin/contracts/token/ERC20/prese
 import {ERC721PresetMinterPauserAutoId} from "@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol";
 import {ERC1155PresetMinterPauser} from "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
-import {ZoraCreator1155Impl} from "../../../src/nft/ZoraCreator1155Impl.sol";
-import {Zora1155} from "../../../src/proxies/Zora1155.sol";
+import {PodsCreator1155Impl} from "../../../src/nft/PodsCreator1155Impl.sol";
+import {Pods1155} from "../../../src/proxies/Pods1155.sol";
 import {IZoraCreator1155} from "../../../src/interfaces/IZoraCreator1155.sol";
 import {IRenderer1155} from "../../../src/interfaces/IRenderer1155.sol";
 import {ICreatorRoyaltiesControl} from "../../../src/interfaces/ICreatorRoyaltiesControl.sol";
@@ -17,7 +17,7 @@ import {ZoraCreatorRedeemMinterStrategy} from "../../../src/minters/redeem/ZoraC
 /// @notice Contract versions after v1.4.0 will not support burn to redeem
 contract ZoraCreatorRedeemMinterStrategyTest is Test {
     ProtocolRewards internal protocolRewards;
-    ZoraCreator1155Impl internal target;
+    PodsCreator1155Impl internal target;
     ZoraCreatorRedeemMinterStrategy internal redeemMinter;
     address payable internal admin = payable(address(0x999));
     uint256 internal newTokenId;
@@ -31,9 +31,9 @@ contract ZoraCreatorRedeemMinterStrategyTest is Test {
         zora = makeAddr("zora");
         bytes[] memory emptyData = new bytes[](0);
         protocolRewards = new ProtocolRewards();
-        ZoraCreator1155Impl targetImpl = new ZoraCreator1155Impl(zora, address(0), address(protocolRewards));
-        Zora1155 proxy = new Zora1155(address(targetImpl));
-        target = ZoraCreator1155Impl(payable(address(proxy)));
+        PodsCreator1155Impl targetImpl = new PodsCreator1155Impl(zora, address(0), address(protocolRewards));
+        Pods1155 proxy = new Pods1155(address(targetImpl));
+        target = PodsCreator1155Impl(payable(address(proxy)));
         target.initialize("test", "test", ICreatorRoyaltiesControl.RoyaltyConfiguration(0, 0, address(0)), admin, emptyData);
         redeemMinter = new ZoraCreatorRedeemMinterStrategy();
         redeemMinter.initialize(address(target));

@@ -5,10 +5,10 @@ import "forge-std/Test.sol";
 import {Zora1155FactoryFixtures} from "../fixtures/Zora1155FactoryFixtures.sol";
 import {Zora1155PremintFixtures} from "../fixtures/Zora1155PremintFixtures.sol";
 import {ZoraCreator1155FactoryImpl} from "../../src/factory/ZoraCreator1155FactoryImpl.sol";
-import {Zora1155PremintExecutor} from "../../src/proxies/Zora1155PremintExecutor.sol";
-import {ZoraCreator1155Impl} from "../../src/nft/ZoraCreator1155Impl.sol";
+import {Pods1155PremintExecutor} from "../../src/proxies/Pods1155PremintExecutor.sol";
+import {PodsCreator1155Impl} from "../../src/nft/PodsCreator1155Impl.sol";
 import {ZoraCreator1155PremintExecutorImpl} from "../../src/delegation/ZoraCreator1155PremintExecutorImpl.sol";
-import {Zora1155Factory} from "../../src/proxies/Zora1155Factory.sol";
+import {Pods1155Factory} from "../../src/proxies/Pods1155Factory.sol";
 import {IMinter1155} from "../../src/interfaces/IMinter1155.sol";
 import {ProxyShim} from "../../src/utils/ProxyShim.sol";
 import {ZoraCreator1155Attribution, ContractCreationConfig, TokenCreationConfigV2, PremintConfigV2, PremintConfig} from "../../src/delegation/ZoraCreator1155Attribution.sol";
@@ -25,7 +25,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
     address internal creator;
     address internal collector;
     address internal zora;
-    Zora1155Factory internal factoryProxy;
+    Pods1155Factory internal factoryProxy;
     ZoraCreator1155FactoryImpl factoryAtProxy;
     uint256 internal mintFeeAmount = 0.000777 ether;
     ZoraCreator1155PremintExecutorImpl preminterAtProxy;
@@ -47,7 +47,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
         ZoraCreator1155PremintExecutorImpl preminterImplementation = new ZoraCreator1155PremintExecutorImpl(ZoraCreator1155FactoryImpl(address(factoryProxy)));
 
         // build the proxy
-        Zora1155PremintExecutor proxy = new Zora1155PremintExecutor(address(preminterImplementation), "");
+        Pods1155PremintExecutor proxy = new Pods1155PremintExecutor(address(preminterImplementation), "");
 
         // access the executor implementation via the proxy, and initialize the admin
         preminterAtProxy = ZoraCreator1155PremintExecutorImpl(address(proxy));
@@ -90,7 +90,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
         uint256 tokenId = preminterAtProxy
         .premintV2{value: mintFeeAmount}(contractConfig, premintConfig, signature, quantityToMint, defaultMintArguments).tokenId;
 
-        assertEq(ZoraCreator1155Impl(payable(deterministicAddress)).balanceOf(collector, tokenId), 1);
+        assertEq(PodsCreator1155Impl(payable(deterministicAddress)).balanceOf(collector, tokenId), 1);
     }
 
     function test_onlyOwnerCanUpgrade() external {
@@ -147,7 +147,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
         // create 1155 contract via premint, using legacy interface
         uint256 quantityToMint = 1;
 
-        mintFeeAmount = ZoraCreator1155Impl(payable(deterministicAddress)).mintFee();
+        mintFeeAmount = PodsCreator1155Impl(payable(deterministicAddress)).mintFee();
 
         vm.deal(collector, mintFeeAmount);
         vm.prank(collector);

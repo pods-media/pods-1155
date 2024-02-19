@@ -3,8 +3,8 @@ pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
-import {ZoraCreator1155Impl} from "../../../src/nft/ZoraCreator1155Impl.sol";
-import {Zora1155} from "../../../src/proxies/Zora1155.sol";
+import {PodsCreator1155Impl} from "../../../src/nft/PodsCreator1155Impl.sol";
+import {Pods1155} from "../../../src/proxies/Pods1155.sol";
 import {IZoraCreator1155Errors} from "../../../src/interfaces/IZoraCreator1155Errors.sol";
 import {IMinter1155} from "../../../src/interfaces/IMinter1155.sol";
 import {ICreatorRoyaltiesControl} from "../../../src/interfaces/ICreatorRoyaltiesControl.sol";
@@ -13,7 +13,7 @@ import {ILimitedMintPerAddressErrors} from "../../../src/interfaces/ILimitedMint
 import {ZoraCreatorFixedPriceSaleStrategy} from "../../../src/minters/fixed-price/ZoraCreatorFixedPriceSaleStrategy.sol";
 
 contract ZoraCreatorFixedPriceSaleStrategyTest is Test {
-    ZoraCreator1155Impl internal target;
+    PodsCreator1155Impl internal target;
     ZoraCreatorFixedPriceSaleStrategy internal fixedPrice;
     address payable internal admin = payable(address(0x999));
     address internal zora;
@@ -30,9 +30,9 @@ contract ZoraCreatorFixedPriceSaleStrategyTest is Test {
 
         bytes[] memory emptyData = new bytes[](0);
         ProtocolRewards protocolRewards = new ProtocolRewards();
-        ZoraCreator1155Impl targetImpl = new ZoraCreator1155Impl(zora, address(0), address(protocolRewards));
-        Zora1155 proxy = new Zora1155(address(targetImpl));
-        target = ZoraCreator1155Impl(payable(address(proxy)));
+        PodsCreator1155Impl targetImpl = new PodsCreator1155Impl(zora, address(0), address(protocolRewards));
+        Pods1155 proxy = new Pods1155(address(targetImpl));
+        target = PodsCreator1155Impl(payable(address(proxy)));
         target.initialize("test", "test", ICreatorRoyaltiesControl.RoyaltyConfiguration(0, 0, address(0)), admin, emptyData);
         fixedPrice = new ZoraCreatorFixedPriceSaleStrategy();
     }

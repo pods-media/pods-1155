@@ -8,7 +8,7 @@ import {ZoraCreator1155PremintExecutorImpl} from "@zoralabs/zora-1155-contracts/
 import {ZoraCreator1155FactoryImpl} from "@zoralabs/zora-1155-contracts/src/factory/ZoraCreator1155FactoryImpl.sol";
 import {ZoraCreator1155Attribution, ContractCreationConfig, PremintConfigV2, TokenCreationConfigV2, PremintConfig, TokenCreationConfig} from "@zoralabs/zora-1155-contracts/src/delegation/ZoraCreator1155Attribution.sol";
 import {ScriptDeploymentConfig} from "./DeploymentConfig.sol";
-import {ZoraCreator1155Impl} from "@zoralabs/zora-1155-contracts/src/nft/ZoraCreator1155Impl.sol";
+import {PodsCreator1155Impl} from "@zoralabs/zora-1155-contracts/src/nft/PodsCreator1155Impl.sol";
 
 contract DeploymentTestingUtils is Script {
     function createAndSignPremintV1(
@@ -74,7 +74,7 @@ contract DeploymentTestingUtils is Script {
             mintArguments
         );
 
-        require(ZoraCreator1155Impl(payable(premintResult.contractAddress)).delegatedTokenId(premintConfig.uid) == premintResult.tokenId, "token id mismatch");
+        require(PodsCreator1155Impl(payable(premintResult.contractAddress)).delegatedTokenId(premintConfig.uid) == premintResult.tokenId, "token id mismatch");
     }
 
     function createAndSignPremintV2(
@@ -135,7 +135,7 @@ contract DeploymentTestingUtils is Script {
         .premintV2{value: mintFee(quantityToMint)}(contractConfig, premintConfig, signature, quantityToMint, mintArguments).tokenId;
 
         require(
-            ZoraCreator1155Impl(payable(preminterAtProxy.getContractAddress(contractConfig))).delegatedTokenId(premintConfig.uid) == tokenId,
+            PodsCreator1155Impl(payable(preminterAtProxy.getContractAddress(contractConfig))).delegatedTokenId(premintConfig.uid) == tokenId,
             "token id not created for uid"
         );
     }

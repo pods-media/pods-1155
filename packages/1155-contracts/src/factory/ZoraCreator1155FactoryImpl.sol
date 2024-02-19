@@ -10,7 +10,7 @@ import {ICreatorRoyaltiesControl} from "../interfaces/ICreatorRoyaltiesControl.s
 import {IMinter1155} from "../interfaces/IMinter1155.sol";
 import {IContractMetadata} from "../interfaces/IContractMetadata.sol";
 import {Ownable2StepUpgradeable} from "../utils/ownable/Ownable2StepUpgradeable.sol";
-import {Zora1155} from "../proxies/Zora1155.sol";
+import {Pods1155} from "../proxies/Pods1155.sol";
 import {Create2Upgradeable} from "@zoralabs/openzeppelin-contracts-upgradeable/contracts/utils/Create2Upgradeable.sol";
 import {CREATE3} from "solmate/src/utils/CREATE3.sol";
 
@@ -72,9 +72,9 @@ contract ZoraCreator1155FactoryImpl is IZoraCreator1155Factory, Ownable2StepUpgr
         address payable defaultAdmin,
         bytes[] calldata setupActions
     ) external returns (address) {
-        Zora1155 newContract = new Zora1155(address(zora1155Impl));
+        Pods1155 newContract = new Pods1155(address(zora1155Impl));
 
-        _initializeContract(Zora1155(newContract), newContractURI, name, defaultRoyaltyConfiguration, defaultAdmin, setupActions);
+        _initializeContract(Pods1155(newContract), newContractURI, name, defaultRoyaltyConfiguration, defaultAdmin, setupActions);
 
         return address(newContract);
     }
@@ -88,9 +88,9 @@ contract ZoraCreator1155FactoryImpl is IZoraCreator1155Factory, Ownable2StepUpgr
     ) external returns (address) {
         bytes32 digest = _hashContract(msg.sender, newContractURI, name, defaultAdmin);
 
-        address createdContract = CREATE3.deploy(digest, abi.encodePacked(type(Zora1155).creationCode, abi.encode(zora1155Impl)), 0);
+        address createdContract = CREATE3.deploy(digest, abi.encodePacked(type(Pods1155).creationCode, abi.encode(zora1155Impl)), 0);
 
-        Zora1155 newContract = Zora1155(payable(createdContract));
+        Pods1155 newContract = Pods1155(payable(createdContract));
 
         _initializeContract(newContract, newContractURI, name, defaultRoyaltyConfiguration, defaultAdmin, setupActions);
 
@@ -109,7 +109,7 @@ contract ZoraCreator1155FactoryImpl is IZoraCreator1155Factory, Ownable2StepUpgr
     }
 
     function _initializeContract(
-        Zora1155 newContract,
+        Pods1155 newContract,
         string calldata newContractURI,
         string calldata name,
         ICreatorRoyaltiesControl.RoyaltyConfiguration memory defaultRoyaltyConfiguration,

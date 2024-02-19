@@ -4,14 +4,14 @@ pragma solidity 0.8.17;
 import "forge-std/Test.sol";
 import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.sol";
 import {ZoraCreator1155FactoryImpl} from "../../src/factory/ZoraCreator1155FactoryImpl.sol";
-import {ZoraCreator1155Impl} from "../../src/nft/ZoraCreator1155Impl.sol";
-import {Zora1155Factory} from "../../src/proxies/Zora1155Factory.sol";
+import {PodsCreator1155Impl} from "../../src/nft/PodsCreator1155Impl.sol";
+import {Pods1155Factory} from "../../src/proxies/Pods1155Factory.sol";
 import {IZoraCreator1155Factory} from "../../src/interfaces/IZoraCreator1155Factory.sol";
 import {IZoraCreator1155} from "../../src/interfaces/IZoraCreator1155.sol";
 import {IZoraCreator1155Errors} from "../../src/interfaces/IZoraCreator1155Errors.sol";
 import {IMinter1155} from "../../src/interfaces/IMinter1155.sol";
 import {ICreatorRoyaltiesControl} from "../../src/interfaces/ICreatorRoyaltiesControl.sol";
-import {Zora1155} from "../../src/proxies/Zora1155.sol";
+import {Pods1155} from "../../src/proxies/Pods1155.sol";
 import {UpgradeGate} from "../../src/upgrades/UpgradeGate.sol";
 import {MockContractMetadata} from "../mock/MockContractMetadata.sol";
 import {ProxyShim} from "../../src/utils/ProxyShim.sol";
@@ -27,16 +27,16 @@ contract ZoraCreator1155FactoryTest is Test {
 
     function setUp() external {
         zora = makeAddr("zora");
-        mintFeeAmount = 0.000777 ether;
+        mintFeeAmount = 0.0007 ether;
 
         upgradeGate = new UpgradeGate();
         upgradeGate.initialize(zora);
 
         address factoryShimAddress = address(new ProxyShim(zora));
-        Zora1155Factory factoryProxy = new Zora1155Factory(factoryShimAddress, "");
+        Pods1155Factory factoryProxy = new Pods1155Factory(factoryShimAddress, "");
 
         ProtocolRewards protocolRewards = new ProtocolRewards();
-        ZoraCreator1155Impl zoraCreator1155Impl = new ZoraCreator1155Impl(zora, address(upgradeGate), address(protocolRewards));
+        PodsCreator1155Impl zoraCreator1155Impl = new PodsCreator1155Impl(zora, address(upgradeGate), address(protocolRewards));
 
         factoryImpl = new ZoraCreator1155FactoryImpl(zoraCreator1155Impl, IMinter1155(address(1)), IMinter1155(address(2)), IMinter1155(address(3)));
         factory = ZoraCreator1155FactoryImpl(address(factoryProxy));
@@ -63,7 +63,7 @@ contract ZoraCreator1155FactoryTest is Test {
     function test_initialize(address initialOwner) external {
         vm.assume(initialOwner != address(0));
         address payable proxyAddress = payable(
-            address(new Zora1155Factory(address(factoryImpl), abi.encodeWithSelector(ZoraCreator1155FactoryImpl.initialize.selector, initialOwner)))
+            address(new Pods1155Factory(address(factoryImpl), abi.encodeWithSelector(ZoraCreator1155FactoryImpl.initialize.selector, initialOwner)))
         );
         ZoraCreator1155FactoryImpl proxy = ZoraCreator1155FactoryImpl(proxyAddress);
         assertEq(proxy.owner(), initialOwner);
@@ -93,7 +93,7 @@ contract ZoraCreator1155FactoryTest is Test {
             admin,
             initSetup
         );
-        ZoraCreator1155Impl target = ZoraCreator1155Impl(payable(deployedAddress));
+        PodsCreator1155Impl target = PodsCreator1155Impl(payable(deployedAddress));
 
         ICreatorRoyaltiesControl.RoyaltyConfiguration memory config = target.getRoyalties(0);
         assertEq(config.royaltyMintSchedule, 0);
@@ -116,7 +116,7 @@ contract ZoraCreator1155FactoryTest is Test {
         );
 
         address payable proxyAddress = payable(
-            address(new Zora1155Factory(address(factoryImpl), abi.encodeWithSelector(ZoraCreator1155FactoryImpl.initialize.selector, initialOwner)))
+            address(new Pods1155Factory(address(factoryImpl), abi.encodeWithSelector(ZoraCreator1155FactoryImpl.initialize.selector, initialOwner)))
         );
         ZoraCreator1155FactoryImpl proxy = ZoraCreator1155FactoryImpl(proxyAddress);
         vm.prank(initialOwner);
@@ -130,7 +130,7 @@ contract ZoraCreator1155FactoryTest is Test {
         MockContractMetadata mockContractMetadata = new MockContractMetadata("ipfs://asdfadsf", "name");
 
         address payable proxyAddress = payable(
-            address(new Zora1155Factory(address(factoryImpl), abi.encodeWithSelector(ZoraCreator1155FactoryImpl.initialize.selector, initialOwner)))
+            address(new Pods1155Factory(address(factoryImpl), abi.encodeWithSelector(ZoraCreator1155FactoryImpl.initialize.selector, initialOwner)))
         );
         ZoraCreator1155FactoryImpl proxy = ZoraCreator1155FactoryImpl(proxyAddress);
         vm.prank(initialOwner);
@@ -189,7 +189,7 @@ contract ZoraCreator1155FactoryTest is Test {
         // * create a new version of the erc1155 implementation
         // * create a new factory that points to that new erc1155 implementation,
         // * upgrade the proxy to point to the new factory
-        IZoraCreator1155 newZoraCreator = new ZoraCreator1155Impl(zora, address(factory), address(new ProtocolRewards()));
+        IZoraCreator1155 newZoraCreator = new PodsCreator1155Impl(zora, address(factory), address(new ProtocolRewards()));
 
         ZoraCreator1155FactoryImpl newFactoryImpl = new ZoraCreator1155FactoryImpl(
             newZoraCreator,
@@ -237,10 +237,10 @@ contract ZoraCreator1155FactoryTest is Test {
         // now create deterministically, address should match expected address
         address createdAddress = factory.createContractDeterministic(uri, nameA, royaltyConfig, payable(contractAdmin), initSetup);
 
-        ZoraCreator1155Impl creatorProxy = ZoraCreator1155Impl(payable(createdAddress));
+        PodsCreator1155Impl creatorProxy = PodsCreator1155Impl(payable(createdAddress));
 
         // 2. upgrade the created contract by creating a new contract and upgrading the existing one to point to it.
-        IZoraCreator1155 newZoraCreator = new ZoraCreator1155Impl(zora, address(0), address(new ProtocolRewards()));
+        IZoraCreator1155 newZoraCreator = new PodsCreator1155Impl(zora, address(0), address(new ProtocolRewards()));
 
         address[] memory baseImpls = new address[](1);
         baseImpls[0] = address(factory.zora1155Impl());

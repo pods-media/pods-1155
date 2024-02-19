@@ -2,7 +2,7 @@
 pragma solidity 0.8.17;
 
 import "forge-std/Test.sol";
-import {Zora1155Factory} from "@zoralabs/zora-1155-contracts/src/proxies/Zora1155Factory.sol";
+import {Pods1155Factory} from "@zoralabs/zora-1155-contracts/src/proxies/Pods1155Factory.sol";
 import {ZoraDeployerUtils, Create2Deployment} from "../src/ZoraDeployerUtils.sol";
 import {DeterministicProxyDeployer} from "../src/DeterministicProxyDeployer.sol";
 import {ProxyShim} from "@zoralabs/zora-1155-contracts/src/utils/ProxyShim.sol";
@@ -56,7 +56,7 @@ contract DeterministicProxyDeployerTest is DeterministicDeployerScript, Test {
         // 2. Create factory deployer at deterministic address
         DeterministicProxyDeployer factoryProxyDeployer = _deployKnownZoraFactoryProxy(proxyDeployerSalt);
 
-        bytes memory factoryProxyCreationCode = type(Zora1155Factory).creationCode;
+        bytes memory factoryProxyCreationCode = type(Pods1155Factory).creationCode;
         address mintFeeRecipient = makeAddr("mintFeeRecipient ");
 
         bytes32 digest = factoryProxyDeployer.hashedDigestFactoryProxy(

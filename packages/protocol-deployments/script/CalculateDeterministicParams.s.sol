@@ -5,13 +5,13 @@ import "forge-std/Script.sol";
 import "forge-std/console2.sol";
 
 import {ZoraDeployerBase} from "../src/ZoraDeployerBase.sol";
-import {Zora1155Factory} from "@zoralabs/zora-1155-contracts/src/proxies/Zora1155Factory.sol";
+import {Pods1155Factory} from "@zoralabs/zora-1155-contracts/src/proxies/Pods1155Factory.sol";
 import {ProxyShim} from "@zoralabs/zora-1155-contracts/src/utils/ProxyShim.sol";
 import {UpgradeGate} from "@zoralabs/zora-1155-contracts/src/upgrades/UpgradeGate.sol";
 import {LibString} from "solady/utils/LibString.sol";
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 import {ZoraDeployerUtils} from "../src/ZoraDeployerUtils.sol";
-import {Zora1155PremintExecutor} from "@zoralabs/zora-1155-contracts/src/proxies/Zora1155PremintExecutor.sol";
+import {Pods1155PremintExecutor} from "@zoralabs/zora-1155-contracts/src/proxies/Pods1155PremintExecutor.sol";
 import {DeterministicDeployerScript, DeterministicParams} from "../src/DeterministicDeployerScript.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
@@ -37,7 +37,7 @@ contract FactoryProxyDeterministicParams is ZoraDeployerBase {
     }
 
     function calculateForFactoryProxy() internal {
-        bytes memory proxyCreationCode = type(Zora1155Factory).creationCode;
+        bytes memory proxyCreationCode = type(Pods1155Factory).creationCode;
 
         DeterministicParams memory deterministicParams = getDeterministicDeploymentParams(deployerAddress, proxyCreationCode, 100);
 
@@ -48,7 +48,7 @@ contract FactoryProxyDeterministicParams is ZoraDeployerBase {
     }
 
     function calculateForPremintExecutorProxy() internal {
-        bytes memory proxyCreationCode = type(Zora1155PremintExecutor).creationCode;
+        bytes memory proxyCreationCode = type(Pods1155PremintExecutor).creationCode;
 
         DeterministicParams memory deterministicParams = getDeterministicDeploymentParams(deployerAddress, proxyCreationCode, 200);
 

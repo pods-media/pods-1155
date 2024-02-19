@@ -5,8 +5,8 @@ import "forge-std/Script.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 import {IZoraCreator1155Factory} from "@zoralabs/zora-1155-contracts/src/interfaces/IZoraCreator1155Factory.sol";
-import {ZoraCreator1155Impl} from "@zoralabs/zora-1155-contracts/src/nft/ZoraCreator1155Impl.sol";
-import {Zora1155Factory} from "@zoralabs/zora-1155-contracts/src/proxies/Zora1155Factory.sol";
+import {PodsCreator1155Impl} from "@zoralabs/zora-1155-contracts/src/nft/PodsCreator1155Impl.sol";
+import {Pods1155Factory} from "@zoralabs/zora-1155-contracts/src/proxies/Pods1155Factory.sol";
 import {ICreatorRoyaltiesControl} from "@zoralabs/zora-1155-contracts/src/interfaces/ICreatorRoyaltiesControl.sol";
 import {ScriptDeploymentConfig, Deployment, ChainConfig} from "./DeploymentConfig.sol";
 import {ZoraDeployerUtils} from "./ZoraDeployerUtils.sol";
