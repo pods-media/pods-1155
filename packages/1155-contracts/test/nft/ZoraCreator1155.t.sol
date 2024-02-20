@@ -706,7 +706,7 @@ contract ZoraCreator1155Test is Test {
     }
 
     function test_mintFee_returnsMintFee() public {
-        assertEq(target.mintFee(), 0.000777 ether);
+        assertEq(target.mintFee(), 0.0007 ether);
     }
 
     function test_FreeMintRewards(uint256 quantity) public {

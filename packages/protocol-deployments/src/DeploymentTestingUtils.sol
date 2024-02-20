@@ -151,7 +151,7 @@ contract DeploymentTestingUtils is Script {
     }
 
     function mintFee(uint256 quantityToMint) internal pure returns (uint256) {
-        return quantityToMint * 0.000777 ether;
+        return quantityToMint * 0.0007 ether;
     }
 
     function signPremint(PremintConfig memory premintConfig, address deterministicAddress, uint256 privateKey) private view returns (bytes memory signature) {

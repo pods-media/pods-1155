@@ -27,7 +27,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
     address internal zora;
     Pods1155Factory internal factoryProxy;
     ZoraCreator1155FactoryImpl factoryAtProxy;
-    uint256 internal mintFeeAmount = 0.000777 ether;
+    uint256 internal mintFeeAmount = 0.0007 ether;
     ZoraCreator1155PremintExecutorImpl preminterAtProxy;
 
     IZoraCreator1155PremintExecutor.MintArguments defaultMintArguments;
@@ -224,14 +224,14 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
         );
 
         // use old mint fee - this is prior to having the `mintFee` functino on premint executor
-        mintFeeAmount = 0.000777 ether;
+        mintFeeAmount = 0.0007 ether;
 
         // create 1155 contract via premint, using legacy interface
         uint256 quantityToMint = 1;
 
         mintFeeAmount = forkedPreminterProxy.mintFee(deterministicAddress);
 
-        assertEq(mintFeeAmount, 0.000777 ether);
+        assertEq(mintFeeAmount, 0.0007 ether);
 
         vm.deal(collector, mintFeeAmount);
         vm.prank(collector);
@@ -273,7 +273,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
 
         // have mint referral withdraw - it should pass
         vm.prank(mintReferral);
-        IProtocolRewards(0x7777777F279eba3d3Ad8F4E708545291A6fDBA8B).withdraw(mintReferral, 0.000111 ether * quantityToMint);
+        IProtocolRewards(0x7777777F279eba3d3Ad8F4E708545291A6fDBA8B).withdraw(mintReferral, 0.0001 ether * quantityToMint);
     }
 
     function _signPremint(bytes32 structHash, bytes32 premintVersion, address contractAddress) private view returns (bytes memory signature) {

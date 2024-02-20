@@ -288,10 +288,10 @@ contract ZoraCreatorMerkleMinterStrategyTest is Test {
         vm.startPrank(mintTo);
         target.mintWithRewards{value: totalValue}(merkleMinter, newTokenId, 10, abi.encode(mintTo, maxQuantity, pricePerToken, merkleProof), address(0));
 
-        vm.deal(mintTo, 1.000777 ether);
+        vm.deal(mintTo, 1.0007 ether);
 
         vm.expectRevert(abi.encodeWithSelector(ILimitedMintPerAddressErrors.UserExceedsMintLimit.selector, mintTo, 10, 11));
-        target.mintWithRewards{value: 1.000777 ether}(merkleMinter, newTokenId, 1, abi.encode(mintTo, maxQuantity, pricePerToken, merkleProof), address(0));
+        target.mintWithRewards{value: 1.0007 ether}(merkleMinter, newTokenId, 1, abi.encode(mintTo, maxQuantity, pricePerToken, merkleProof), address(0));
 
         vm.stopPrank();
     }
