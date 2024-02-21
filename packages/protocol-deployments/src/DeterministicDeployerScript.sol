@@ -42,7 +42,7 @@ contract DeterministicDeployerScript is Script {
         expectedAddress = vm.parseAddress(addressStr);
 
         uint256 saltIndex = LibString.indexOf(result, "Salt: ");
-        string memory saltStr = LibString.slice(result, saltIndex + 6, bytes(result).length);
+        string memory saltStr = LibString.slice(result, saltIndex + 6, saltIndex + 6 + 66);
 
         salt = bytes32(vm.parseUint(saltStr));
     }
@@ -140,7 +140,7 @@ contract DeterministicDeployerScript is Script {
         bytes memory factoryProxyInitCode = abi.encodePacked(proxyCreationCode, abi.encode(proxyShimAddress, ""));
         bytes32 creationCodeHash = keccak256(factoryProxyInitCode);
 
-        (proxySalt, deterministicProxyAddress) = mineSalt(proxyDeployerAddress, creationCodeHash, "777777");
+        (proxySalt, deterministicProxyAddress) = mineSalt(proxyDeployerAddress, creationCodeHash, "");
     }
 
     function getDeterministicDeploymentParams(
