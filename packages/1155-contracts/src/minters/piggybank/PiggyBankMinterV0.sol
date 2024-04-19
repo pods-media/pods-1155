@@ -126,4 +126,6 @@ contract PiggyBankMinterV0 is IPiggyBankMinterV0, Ownable, Initializable {
 
         return allocation.limitPerRecipient - claimed;
     }
+
+    receive() external payable {}
 }
