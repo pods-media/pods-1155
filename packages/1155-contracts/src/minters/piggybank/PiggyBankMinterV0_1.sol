@@ -7,7 +7,7 @@ import {IMinter1155} from "../../interfaces/IMinter1155.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract PiggyBankMinterV0 is IPiggyBankMinterV0, Ownable, Initializable {
+contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
     IMinter1155 public fixedPriceMinter;
 
     /// @dev 1155 contract -> 1155 tokenId -> allocation
@@ -78,6 +78,13 @@ contract PiggyBankMinterV0 is IPiggyBankMinterV0, Ownable, Initializable {
         allocation.paused = true;
     }
 
+    function unpauseAllocation(address contractAddress, uint256 tokenId) external override onlyOwner {
+        Allocation storage allocation = allocations[contractAddress][tokenId];
+        require(allocation.exists, "Allocation does not exist");
+
+        allocation.paused = false;
+    }
+
     function mintPiggyBank(
         address contractAddress,
         uint256 tokenId,
@@ -85,7 +92,15 @@ contract PiggyBankMinterV0 is IPiggyBankMinterV0, Ownable, Initializable {
         uint32 quantityPaid,
         address recipient
     ) external payable {
-        Allocation storage allocation = allocations[contractAddress][tokenId];
+        Allocation storage allocation;
+        uint256 tokenIdForMappings = tokenId;
+        if(allocations[contractAddress][tokenId].exists) {
+            allocation = allocations[contractAddress][tokenId];
+        } else {
+            // fallback to the contract-level allocation
+            allocation = allocations[contractAddress][0];
+            tokenIdForMappings = 0;
+        }   
         require(allocation.exists, "Allocation does not exist");
         require(!allocation.paused, "Allocation is paused");
 
@@ -94,12 +109,12 @@ contract PiggyBankMinterV0 is IPiggyBankMinterV0, Ownable, Initializable {
         require(msg.value == allocation.costPerToken * quantityPaid, "Incorrect payment amount");
         require(address(this).balance >= freeMintCost, "Insufficient contract balance");
 
-        uint32 recipientClaimed = claims[contractAddress][tokenId][recipient];
+        uint32 recipientClaimed = claims[contractAddress][tokenIdForMappings][recipient];
 
         require(allocation.limitPerRecipient >= quantityFree + recipientClaimed, "Recipient will exceed their limit");
         require(allocation.totalAllocated >= quantityFree + allocation.totalClaimed, "Not enough tokens allocated");
 
-        claims[contractAddress][tokenId][recipient] += quantityFree;
+        claims[contractAddress][tokenIdForMappings][recipient] += quantityFree;
         allocation.totalClaimed += quantityFree;
         
         IZoraCreator1155(contractAddress).mintWithRewards{
@@ -118,13 +133,28 @@ contract PiggyBankMinterV0 is IPiggyBankMinterV0, Ownable, Initializable {
         uint256 tokenId,
         address recipient
     ) external view override returns (uint256) {
-        Allocation storage allocation = allocations[contractAddress][tokenId];
+        Allocation storage allocation;
+        uint256 tokenIdForMappings = tokenId;
+        if(allocations[contractAddress][tokenId].exists) {
+            allocation = allocations[contractAddress][tokenId];
+        } else {
+            // fallback to the contract-level allocation
+            allocation = allocations[contractAddress][0];
+            tokenIdForMappings = 0;
+        }   
         if(allocation.paused) return 0;
 
-        uint128 claimed = claims[contractAddress][tokenId][recipient];
+        uint128 claimed = claims[contractAddress][tokenIdForMappings][recipient];
         if(allocation.limitPerRecipient <= claimed) return 0;
 
         return allocation.limitPerRecipient - claimed;
+    }
+
+    function getAllocation(
+        address contractAddress,
+        uint256 tokenId
+    ) external view override returns (Allocation memory) {
+        return allocations[contractAddress][tokenId];
     }
 
     receive() external payable {}

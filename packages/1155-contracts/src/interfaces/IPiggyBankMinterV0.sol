@@ -32,6 +32,7 @@ interface IPiggyBankMinterV0 {
     ) external;
 
     function pauseAllocation(address contractAddress, uint256 tokenId) external;
+    function unpauseAllocation(address contractAddress, uint256 tokenId) external;
 
     function mintPiggyBank(
         address contractAddress,
@@ -46,6 +47,11 @@ interface IPiggyBankMinterV0 {
         uint256 tokenId,
         address recipient
     ) external view returns (uint256);
+
+    function getAllocation(
+        address contractAddress,
+        uint256 tokenId
+    ) external view returns (Allocation memory);
 }
 
 
