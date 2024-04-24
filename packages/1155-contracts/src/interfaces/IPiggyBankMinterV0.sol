@@ -7,7 +7,7 @@ interface IPiggyBankMinterV0 {
     event AllocationEdited(address indexed contractAddress, uint256 indexed tokenId, uint128 costPerToken, uint32 totalAllocated, uint32 limitPerRecipient);
     event AllocationPaused(address indexed contractAddress, uint256 indexed tokenId);
     event AllocationUnpaused(address indexed contractAddress, uint256 indexed tokenId);
-    event PiggyBankMinted(address indexed contractAddress, uint256 indexed tokenId, uint32 quantityFree, uint128 quantityPaid, address recipient);
+    event PiggyBankMinted(address indexed contractAddress, uint256 indexed tokenId, uint32 quantityFree, uint32 quantityPaid, address recipient);
     event OwnerWithdraw(address indexed to, uint256 amount, address owner);
 
     struct Allocation {
@@ -42,7 +42,7 @@ interface IPiggyBankMinterV0 {
         address contractAddress,
         uint256 tokenId,
         uint32 quantityFree,
-        uint128 quantityPaid,
+        uint32 quantityPaid,
         address recipient
     ) external payable;
 

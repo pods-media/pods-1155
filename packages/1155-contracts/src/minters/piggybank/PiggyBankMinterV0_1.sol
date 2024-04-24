@@ -95,7 +95,7 @@ contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
         address contractAddress,
         uint256 tokenId,
         uint32 quantityFree,
-        uint128 quantityPaid,
+        uint32 quantityPaid,
         address recipient
     ) external payable {
         Allocation storage allocation;
