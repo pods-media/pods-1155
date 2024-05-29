@@ -1,6 +1,6 @@
 # Zora Protocol
 
-This repository is a monorepo for the Zora Protocol
+This repository is a monorepo for the Pods fork of [Zora Protocol](https://github.com/ourzora/zora-protocol)
 
 In it you will find:
 
