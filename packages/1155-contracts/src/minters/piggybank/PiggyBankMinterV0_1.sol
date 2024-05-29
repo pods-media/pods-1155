@@ -27,6 +27,8 @@ contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
     function ownerWithdraw(address to, uint256 amount) public onlyOwner {
         (bool success, ) = payable(to).call{value: amount}("");
         require(success, "ETH transfer failed.");
+
+        emit OwnerWithdraw(to, amount, owner());
     }
 
     function sweep(address to) external onlyOwner {
@@ -76,6 +78,8 @@ contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
         require(allocation.exists, "Allocation does not exist");
 
         allocation.paused = true;
+
+        emit AllocationPaused(contractAddress, tokenId);
     }
 
     function unpauseAllocation(address contractAddress, uint256 tokenId) external override onlyOwner {
@@ -83,6 +87,8 @@ contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
         require(allocation.exists, "Allocation does not exist");
 
         allocation.paused = false;
+
+        emit AllocationUnpaused(contractAddress, tokenId);
     }
 
     function mintPiggyBank(
@@ -106,6 +112,8 @@ contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
 
         uint256 freeMintCost = allocation.costPerToken * quantityFree;
 
+        if (quantityFree == 0) {}
+
         require(msg.value == allocation.costPerToken * quantityPaid, "Incorrect payment amount");
         require(address(this).balance >= freeMintCost, "Insufficient contract balance");
 
@@ -126,6 +134,8 @@ contract PiggyBankMinterV0_1 is IPiggyBankMinterV0, Ownable, Initializable {
             abi.encode(recipient), 
             owner()
         );
+
+        emit PiggyBankMinted(contractAddress, tokenId, quantityFree, quantityPaid, recipient);
     }
 
     function claimsAvailable(

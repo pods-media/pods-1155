@@ -5,6 +5,10 @@ interface IPiggyBankMinterV0 {
 
     event AllocationAdded(address indexed contractAddress, uint256 indexed tokenId, uint128 costPerToken, uint32 totalAllocated, uint32 limitPerRecipient);
     event AllocationEdited(address indexed contractAddress, uint256 indexed tokenId, uint128 costPerToken, uint32 totalAllocated, uint32 limitPerRecipient);
+    event AllocationPaused(address indexed contractAddress, uint256 indexed tokenId);
+    event AllocationUnpaused(address indexed contractAddress, uint256 indexed tokenId);
+    event PiggyBankMinted(address indexed contractAddress, uint256 indexed tokenId, uint32 quantityFree, uint32 quantityPaid, address recipient);
+    event OwnerWithdraw(address indexed to, uint256 amount, address owner);
 
     struct Allocation {
         uint128 costPerToken;
