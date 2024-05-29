@@ -1,5 +1,7 @@
 # ZORA 1155 Contracts
 
+_This repository contains additions and modifications by Pods. The original repo can be found [here](https://github.com/ourzora/zora-protocol)._
+
 The Zora Creator 1155 Contracts are the 1155 compliment to the Zora 721 Drops Contracts. While the 721 Drops Contracts enable creators to mint unique, non-fungible tokens (NFTs), the 1155 Contracts allow creators to mint semi-fungible tokens with a set of flexible properties.
 
 The main implementation of the Zora Creator 1155 Contracts includes the following modules:
