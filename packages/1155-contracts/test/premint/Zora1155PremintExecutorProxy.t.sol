@@ -27,7 +27,7 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
     address internal zora;
     Pods1155Factory internal factoryProxy;
     ZoraCreator1155FactoryImpl factoryAtProxy;
-    uint256 internal mintFeeAmount = 0.0007 ether;
+    uint256 internal mintFeeAmount = 0.0001 ether;
     ZoraCreator1155PremintExecutorImpl preminterAtProxy;
 
     IZoraCreator1155PremintExecutor.MintArguments defaultMintArguments;
@@ -224,14 +224,14 @@ contract Zora1155PremintExecutorProxyTest is Test, IHasContractName {
         );
 
         // use old mint fee - this is prior to having the `mintFee` functino on premint executor
-        mintFeeAmount = 0.0007 ether;
+        mintFeeAmount = 0.0001 ether;
 
         // create 1155 contract via premint, using legacy interface
         uint256 quantityToMint = 1;
 
         mintFeeAmount = forkedPreminterProxy.mintFee(deterministicAddress);
 
-        assertEq(mintFeeAmount, 0.0007 ether);
+        assertEq(mintFeeAmount, 0.0001 ether);
 
         vm.deal(collector, mintFeeAmount);
         vm.prank(collector);

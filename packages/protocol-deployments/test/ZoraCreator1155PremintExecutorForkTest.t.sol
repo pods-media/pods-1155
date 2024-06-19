@@ -12,7 +12,7 @@ import {Zora1155PremintFixtures} from "../src/Zora1155PremintFixtures.sol";
 contract ZoraCreator1155PreminterForkTest is ForkDeploymentConfig, Test {
     ZoraCreator1155FactoryImpl factory;
     ZoraCreator1155PremintExecutorImpl preminter;
-    uint256 mintFeeAmount = 0.0007 ether;
+    uint256 mintFeeAmount = 0.0001 ether;
     address creator;
     uint256 creatorPrivateKey;
     address payoutRecipient = makeAddr("payoutRecipient");

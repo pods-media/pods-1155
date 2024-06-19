@@ -27,7 +27,7 @@ contract ZoraCreator1155FactoryTest is Test {
 
     function setUp() external {
         zora = makeAddr("zora");
-        mintFeeAmount = 0.0007 ether;
+        mintFeeAmount = 0.0001 ether;
 
         upgradeGate = new UpgradeGate();
         upgradeGate.initialize(zora);

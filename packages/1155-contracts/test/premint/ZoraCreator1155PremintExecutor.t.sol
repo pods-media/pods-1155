@@ -34,7 +34,7 @@ contract ZoraCreator1155PreminterTest is Test {
     ZoraCreator1155FactoryImpl factory;
 
     ICreatorRoyaltiesControl.RoyaltyConfiguration internal defaultRoyaltyConfig;
-    uint256 internal mintFeeAmount = 0.0007 ether;
+    uint256 internal mintFeeAmount = 0.0001 ether;
 
     // setup contract config
     uint256 internal creatorPrivateKey;
@@ -344,7 +344,7 @@ contract ZoraCreator1155PreminterTest is Test {
 
         // this account will be used to execute the premint, and should result in a contract being created
         premintExecutor = vm.addr(701);
-        uint256 mintCost = quantityToMint * 0.0007 ether;
+        uint256 mintCost = quantityToMint * 0.0001 ether;
         // now call the premint function, using the same config that was used to generate the digest, and the signature
         vm.deal(premintExecutor, mintCost);
         vm.prank(premintExecutor);
@@ -463,7 +463,7 @@ contract ZoraCreator1155PreminterTest is Test {
         preminter.premintV2{value: mintCost}(contractConfig, premintConfig, signature, quantityToMint, mintArguments);
 
         // now get balance of mintReferral in ProtocolRewards - it should be mint referral reward amount * quantityToMint
-        uint256 mintReferralReward = 0.0001 ether;
+        uint256 mintReferralReward = 0.00001 ether;
 
         assertEq(rewards.balanceOf(mintReferral), mintReferralReward * quantityToMint);
 
@@ -929,7 +929,7 @@ contract ZoraCreator1155PreminterTest is Test {
 
         uint256 mintFee = preminter.mintFee(contractAddress);
 
-        assertEq(mintFee, 0.0007 ether);
+        assertEq(mintFee, 0.0001 ether);
     }
 
     function test_mintFee_onNewContracts_returnsNewMintFee() external {
@@ -944,7 +944,7 @@ contract ZoraCreator1155PreminterTest is Test {
 
         uint256 mintFee = preminter.mintFee(contractAddress);
 
-        assertEq(mintFee, 0.0007 ether);
+        assertEq(mintFee, 0.0001 ether);
     }
 
     function _signAndExecutePremint(

@@ -24,7 +24,7 @@ contract PiggyBankMinterV0Test is Test {
 
     function makeAllocation() internal {
         vm.prank(owner);
-        piggyBank.addAllocation(unchained, 29, 1, 100, .0007 ether);
+        piggyBank.addAllocation(unchained, 29, 1, 100, .0001 ether);
     }
 
     function test_canAddAllocation() external {
@@ -42,18 +42,18 @@ contract PiggyBankMinterV0Test is Test {
 
         vm.startPrank(user);
         assertEq(piggyBank.claimsAvailable(unchained, 29, user), 1);
-        piggyBank.mintPiggyBank{value: 0.0007 ether}(unchained, 29, 0, 1, user);
+        piggyBank.mintPiggyBank{value: 0.0001 ether}(unchained, 29, 0, 1, user);
         // minting with 0 free shouldn't impact the allocation
         assertEq(piggyBank.claimsAvailable(unchained, 29, user), 1);
         // it also shouldn't change the piggy bank balance
         assertEq(initialPiggyBalance, address(piggyBank).balance);
         assertEq(IZoraCreator1155(unchained).balanceOf(user, 29), userInitialTokenBalance + 1);
 
-        piggyBank.mintPiggyBank{value: 0.0007 ether}(unchained, 29, 1, 1, user);
+        piggyBank.mintPiggyBank{value: 0.0001 ether}(unchained, 29, 1, 1, user);
         // minting with 1 free should decrement the user's allocation
         assertEq(piggyBank.claimsAvailable(unchained, 29, user), 0);
         // it should also decrement the piggy bank balance
-        assertEq(initialPiggyBalance - 0.0007 ether, address(piggyBank).balance);
+        assertEq(initialPiggyBalance - 0.0001 ether, address(piggyBank).balance);
         assertEq(IZoraCreator1155(unchained).balanceOf(user, 29), userInitialTokenBalance + 3);
 
         vm.expectRevert("Recipient will exceed their limit");
@@ -62,7 +62,7 @@ contract PiggyBankMinterV0Test is Test {
 
     function test_canMintPiggyBankFallbackToContract() external {
         vm.prank(owner);
-        piggyBank.addAllocation(unchained, 0, 1, 100, .0007 ether);
+        piggyBank.addAllocation(unchained, 0, 1, 100, .0001 ether);
 
         address payable user = payable(makeAddr("user"));
         vm.deal(user, 1 ether);
@@ -72,18 +72,18 @@ contract PiggyBankMinterV0Test is Test {
 
         vm.startPrank(user);
         assertEq(piggyBank.claimsAvailable(unchained, 29, user), 1);
-        piggyBank.mintPiggyBank{value: 0.0007 ether}(unchained, 29, 0, 1, user);
+        piggyBank.mintPiggyBank{value: 0.0001 ether}(unchained, 29, 0, 1, user);
         // minting with 0 free shouldn't impact the allocation
         assertEq(piggyBank.claimsAvailable(unchained, 29, user), 1);
         // it also shouldn't change the piggy bank balance
         assertEq(initialPiggyBalance, address(piggyBank).balance);
         assertEq(IZoraCreator1155(unchained).balanceOf(user, 29), userInitialTokenBalance + 1);
 
-        piggyBank.mintPiggyBank{value: 0.0007 ether}(unchained, 29, 1, 1, user);
+        piggyBank.mintPiggyBank{value: 0.0001 ether}(unchained, 29, 1, 1, user);
         // minting with 1 free should decrement the user's allocation
         assertEq(piggyBank.claimsAvailable(unchained, 29, user), 0);
         // it should also decrement the piggy bank balance
-        assertEq(initialPiggyBalance - 0.0007 ether, address(piggyBank).balance);
+        assertEq(initialPiggyBalance - 0.0001 ether, address(piggyBank).balance);
         assertEq(IZoraCreator1155(unchained).balanceOf(user, 29), userInitialTokenBalance + 3);
 
         vm.expectRevert("Recipient will exceed their limit");

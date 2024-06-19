@@ -19,7 +19,7 @@ contract ZoraCreator1155FactoryForkTest is ForkDeploymentConfig, Test {
     uint256 constant tokenMaxSupply = 100;
     uint32 constant royaltyMintSchedule = 10;
     uint32 constant royaltyBPS = 100;
-    uint256 constant mintFee = 0.0007 ether;
+    uint256 constant mintFee = 0.0001 ether;
 
     address collector;
     address creator;
