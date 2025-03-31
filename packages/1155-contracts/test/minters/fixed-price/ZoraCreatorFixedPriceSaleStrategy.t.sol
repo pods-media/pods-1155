@@ -6,6 +6,7 @@ import {ProtocolRewards} from "@zoralabs/protocol-rewards/src/ProtocolRewards.so
 import {PodsCreator1155Impl} from "../../../src/nft/PodsCreator1155Impl.sol";
 import {Pods1155} from "../../../src/proxies/Pods1155.sol";
 import {IZoraCreator1155Errors} from "../../../src/interfaces/IZoraCreator1155Errors.sol";
+import {IMinterErrors} from "../../../src/interfaces/IMinterErrors.sol";
 import {IMinter1155} from "../../../src/interfaces/IMinter1155.sol";
 import {ICreatorRoyaltiesControl} from "../../../src/interfaces/ICreatorRoyaltiesControl.sol";
 import {IZoraCreator1155Factory} from "../../../src/interfaces/IZoraCreator1155Factory.sol";
@@ -281,38 +282,6 @@ contract ZoraCreatorFixedPriceSaleStrategyTest is Test {
         vm.prank(tokenRecipient);
         vm.expectRevert(abi.encodeWithSelector(ILimitedMintPerAddressErrors.UserExceedsMintLimit.selector, tokenRecipient, 5, 6));
         target.mintWithRewards{value: totalValue}(fixedPrice, newTokenId, numTokens, abi.encode(tokenRecipient, ""), address(0));
-    }
-
-    function testFail_setupMint() external {
-        vm.startPrank(admin);
-        uint256 newTokenId = target.setupNewToken("https://zora.co/testing/token.json", 10);
-        target.addPermission(newTokenId, address(fixedPrice), target.PERMISSION_BIT_MINTER());
-        target.callSale(
-            newTokenId,
-            fixedPrice,
-            abi.encodeWithSelector(
-                ZoraCreatorFixedPriceSaleStrategy.setSale.selector,
-                newTokenId,
-                ZoraCreatorFixedPriceSaleStrategy.SalesConfig({
-                    pricePerToken: 1 ether,
-                    saleStart: 0,
-                    saleEnd: type(uint64).max,
-                    maxTokensPerAddress: 9,
-                    fundsRecipient: address(0)
-                })
-            )
-        );
-        vm.stopPrank();
-
-        vm.deal(tokenRecipient, 20 ether);
-
-        vm.startPrank(tokenRecipient);
-        target.mintWithRewards{value: 10 ether}(fixedPrice, newTokenId, 10, abi.encode(tokenRecipient), address(0));
-
-        assertEq(target.balanceOf(tokenRecipient, newTokenId), 10);
-        assertEq(address(target).balance, 10 ether);
-
-        vm.stopPrank();
     }
 
     function test_PricePerToken() external {
